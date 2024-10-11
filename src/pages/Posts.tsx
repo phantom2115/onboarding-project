@@ -16,9 +16,15 @@ const Posts = () => {
   if (isError) return <div>Error!!!</div>;
 
   return (
-    <div>
+    <div className="mt-20">
       {posts.map((post: PostType) => {
-        return <div key={post.id}>{post.id}</div>;
+        return (
+          <div key={post.id}>
+            <div>{post.id}</div>
+            <div>{post.title}</div>
+            <div>{post.body}</div>
+          </div>
+        );
       })}
     </div>
   );
