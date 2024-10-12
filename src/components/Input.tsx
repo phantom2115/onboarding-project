@@ -1,19 +1,10 @@
-import { ChangeEvent } from "react";
+import { ComponentProps } from "react";
 
-interface InputProps {
-  placeholder: string;
-  type: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-const Input = ({ placeholder, type, value, onChange }: InputProps) => {
+const Input = ({ ...props }: ComponentProps<"input">) => {
   return (
     <input
-      className="w-full border border-x-0 border-t-0 border-[#494949] pl-1 h-8"
-      placeholder={placeholder}
-      type={type}
-      value={value}
-      onChange={onChange}
+      className="w-full border-b border-[#494949] px-1.5 h-8 outline-none hover:border-green-500 focus-visible:bg-green-50"
+      {...props}
     />
   );
 };

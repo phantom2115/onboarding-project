@@ -1,9 +1,12 @@
-// const getPosts = async () => {
-//   return await fetch("https://jsonplaceholder.typicode.com/posts").then(
-//     (response) => response.json()
-//   );
-// };
+import axios from "axios";
+import { PostType } from "../types/post";
+import { BASE_URL } from "../constant/api";
 
-
-
-export { getPosts };
+export const getPosts = async () => {
+  try {
+    const response = await axios.get<PostType[]>(`${BASE_URL}/posts`);
+    return response.data;
+  } catch (error) {
+    throw new Error("error");
+  }
+};

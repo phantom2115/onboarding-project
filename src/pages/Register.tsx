@@ -1,13 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { registerAuth } from "../api/auth";
+import { LOGIN_PATH } from "../constant/path";
 
 const Register = () => {
   const [nickname, setNickname] = useState("");
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
+  const navigate = useNavigate();
 
   const nicknameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setNickname(e.currentTarget.value);
@@ -25,19 +28,18 @@ const Register = () => {
     setConfirmPw(e.currentTarget.value);
   };
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(nickname, id, pw, confirmPw);
-    if (nickname)
-      if (pw !== confirmPw) {
-        return;
-      }
-    console.log("gkgk");
-    // 1. 비밀번호랑 비밀번호 확인 같은지 체크
-    // 2. 아이디 중복인지 체크
-    // 3. 닉네임 중복인지 체크 (가 필요한가???)
-    // 다 만족하면 post
+    if (!id || !nickname || !pw || !confirmPw)
+      return alert("모든 값은 필수 입력값입니다.");
+    if (pw !== confirmPw) return alert("비밀번호를 확인해주세요.");
+
+    registerAuth({ nickname, id, password: pw }).then((message) => {
+      alert(message);
+      navigate(LOGIN_PATH);
+    });
   };
+
   return (
     <div className="h-[100vh] flex justify-center items-center">
       <div className="w-48 flex justify-center">
@@ -45,7 +47,7 @@ const Register = () => {
           onSubmit={onSubmitHandler}
           className="w-full flex justify-center items-center flex-col gap-3"
         >
-          <div className="text-xl">회원가입</div>
+          <h1 className="text-xl">회원가입</h1>
           <Input
             placeholder="이름"
             type={"text"}

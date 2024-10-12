@@ -1,32 +1,23 @@
-import { MouseEvent, PropsWithChildren } from "react";
-import { Link } from "react-router-dom";
-interface DefaultProps {
-  fill?: boolean;
-}
-
-interface LinkProps extends DefaultProps {
-  href: string;
-}
-
-interface ButtonProps extends DefaultProps {
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-}
+import { ComponentProps } from "react";
+import { Link, LinkProps } from "react-router-dom";
 
 const Button = ({
   children,
-  fill = false,
+  hidden,
   ...props
-}: PropsWithChildren<LinkProps | ButtonProps>) => {
-  const BUTTON_CN = "bg-green-500 text-white w-full py-2 rounded-md";
+}: { hidden?: boolean } & (LinkProps | ComponentProps<"button">)) => {
+  const BUTTON_CN = `bg-green-500 text-white w-full px-2 py-2 rounded-md text-center hover:bg-green-600 ${
+    hidden ? "hidden" : ""
+  }`;
 
-  if ("href" in props)
+  if ("to" in props)
     return (
-      <Link to={props.href} className={BUTTON_CN}>
+      <Link className={BUTTON_CN} {...props}>
         {children}
       </Link>
     );
   return (
-    <button className={BUTTON_CN} onClick={props?.onClick}>
+    <button className={BUTTON_CN} {...props}>
       {children}
     </button>
   );
